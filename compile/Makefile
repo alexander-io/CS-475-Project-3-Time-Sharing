@@ -49,15 +49,15 @@ SRC_FILES =
 #------------------------------------------------------------------------
 
 SYSTEM_SFILES =								\
-	start.S		ctxsw.S		intr.S
+	start.S		ctxsw.S		intr.S		testandset.S	clkint.S
 #SYSTEM_SFILES =								\
 #	start.S		ctxsw.S		clkint.S	intr.S
 
 SYSTEM_CFILES =								\
-	bufinit.c		panic.c		\
+	clkinit.c	mutex.c		bufinit.c	panic.c		\
 	close.c		conf.c		control.c	\
 	create.c	freebuf.c	freemem.c	getbuf.c	\
-	getc.c		getdev.c	getmem.c	\
+	getc.c		getdev.c	getmem.c		\
 	getpid.c	getstk.c	initialize.c 	\
 	i386.c		ioerr.c		\
 	ionull.c	kill.c		kprintf.c	main.c		\
