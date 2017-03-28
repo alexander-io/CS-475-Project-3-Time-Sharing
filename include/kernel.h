@@ -69,6 +69,9 @@ typedef	int32	status;		/* returned status value (OK/SYSERR)	*/
 // when set to true, the scheduler implements the aging policy
 #define AGING TRUE
 
+// for the timer. we use little endian
+#define QUANTUM 10 // msecs
+
 /* Prototypes of I/O functions used throughout the kernel */
 
 syscall	kprintf(char *fmt, ...);
