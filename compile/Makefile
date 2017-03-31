@@ -50,8 +50,6 @@ SRC_FILES =
 
 SYSTEM_SFILES =								\
 	start.S		ctxsw.S		intr.S		testandset.S	clkint.S
-#SYSTEM_SFILES =								\
-#	start.S		ctxsw.S		clkint.S	intr.S
 
 SYSTEM_CFILES =								\
 	clkinit.c	mutex.c		bufinit.c	panic.c		\
@@ -203,6 +201,9 @@ ${COMPS}:
 
 ../system/clkint.o: ../system/clkint.S
 	${CPP} ${SDEFS} ../system/clkint.S | ${AS} -o ../system/clkint.o
+
+../system/testandset.o: ../system/testandset.S
+	${CPP} ${SDEFS} ../system/testandset.S | ${AS} -o ../system/testandset.o
 
 ../system/ctxsw.o: ../system/ctxsw.S
 	${CPP} ${SDEFS} ../system/ctxsw.S | ${AS} -o ../system/ctxsw.o
