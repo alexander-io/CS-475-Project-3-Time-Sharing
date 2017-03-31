@@ -92,8 +92,8 @@ void	nulluser(void)
 			//everytime resched() is called, it pulls the next process off the ready queue
 			resched();
 
-			// decrement the priority (age) of all 
-			
+			// decrement the priority (age) of all
+
 		}
 	}
 }
@@ -142,7 +142,7 @@ static	void	sysinit(void)
 	     		 (unsigned)&end - 4);
 		memptr = (struct memblk *) HOLEEND;
 		memptr->mnext = (struct memblk *) NULL;
-		memptr->mlength = (int) truncmb( (uint32)maxheap - 
+		memptr->mlength = (int) truncmb( (uint32)maxheap -
 				(uint32)HOLEEND - NULLSTK);
 	} else {
 		/* initialize free memory list to one block */
@@ -191,6 +191,9 @@ static	void	sysinit(void)
 	/* Initialize the PCI bus */
 
 	pci_init();
+
+	// initialize teh hardware timer clock
+	clkinit();
 
 	for (i = 0; i < NDEVS; i++) {
 		if (! isbaddev(i)) {

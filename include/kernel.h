@@ -37,6 +37,7 @@ typedef int32	process;	/* top-level function of a process	*/
 typedef	void	interrupt;	/* interrupt procedure			*/
 typedef	int32	status;		/* returned status value (OK/SYSERR)	*/
 
+// declare mutex_t, group project 3
 typedef uint32 mutex_t;
 
 #define local	static		/* Local procedure or variable declar.	*/
