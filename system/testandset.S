@@ -6,11 +6,16 @@
  * @param lock pointer to a mutex_t variable
  *
  * TODO - add a comment each line describing its action
+ *
+ * %ebx, general register
+ * %esp
+ * %eax
+ *
  */
 test_and_set:
 	pushl	%ebx		# preserve contents of the %ebx register, which is about to be modified
-	movl	8(%esp), %ebx	# TODO
-	movl	$1, %eax	# TODO
-	xchg	%eax, (%ebx)	# TODO
-	popl	%ebx		# TODO
-	ret			# TODO
+	movl	8(%esp), %ebx	# dereference the stack pointer "array", access the stored value 8bytes away, store in %ebx general purpose register
+	movl	$1, %eax	# store 1 into the general purpose register %eax
+	xchg	%eax, (%ebx)	# exchange the values in %eax and %ebx
+	popl	%ebx		# restore the previous %ebx register's value back into %ebx
+	ret		# return control to return address located on the stack
