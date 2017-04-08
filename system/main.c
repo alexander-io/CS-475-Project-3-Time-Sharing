@@ -3,11 +3,15 @@
 #include <xinu.h>
 #include <stdio.h>
 
+mutex_t lock = FALSE;
+
 void    printchar(char c)
 {
+    mutex_lock(&lock);
     int i;
     for (i=0; i<30; i++)
         kprintf("%c", c);
+    mutex_unlock(&lock);
 }
 
 int main(uint32 argc, uint32 *argv)
