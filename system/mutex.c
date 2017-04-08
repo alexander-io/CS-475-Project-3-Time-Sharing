@@ -9,7 +9,9 @@
 void mutex_lock(mutex_t *lock)
 {
 	// write a busy-wait loop using test_and_set
-  while(test_and_set(&lock) == 1){}
+  while(test_and_set(lock)){ 
+    ; // busy wait
+  }
 }
 
 /**
@@ -19,5 +21,6 @@ void mutex_lock(mutex_t *lock)
 void mutex_unlock(mutex_t *lock)
 {
 	//unlock!
+
   (*lock) = 0;
 }
