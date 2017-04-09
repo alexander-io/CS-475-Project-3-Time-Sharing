@@ -45,8 +45,6 @@ void	think()
 void	philosopher(uint32 phil_id)
 {
 	srand(phil_id);
-	// uint32 right = locks[(phil_id+N-1)%N];				// right fork
-	// uint32 left = locks[phil_id];	//  left fork
 	uint32 right = (phil_id+N-1)%N;				// right fork
 	uint32 left = phil_id;	//  left fork
 	int r; // declare random integer variable used for 30/70% comparison
@@ -55,17 +53,12 @@ void	philosopher(uint32 phil_id)
 		// 70/30
 		r = rand()%10;
 		if (r<3){
-			// printf("!!!!!!!! r is less than 3\n");
 			mutex_lock(&locks[right]); // locks[(phil_id+N-1)%N];
 			mutex_lock(&locks[left]);
-			// mutex_lock(&right); // locks[(phil_id+N-1)%N];
-			// mutex_lock(&left);
 			mutex_lock(&print_lock[0]);
 			printf("Philosopher %d eating : nom nom nom\n", phil_id);
 			mutex_unlock(&print_lock[0]);
 			eat();
-			// mutex_unlock(&left);
-			// mutex_unlock(&right);
 			mutex_unlock(&locks[left]);
 			mutex_unlock(&locks[right]);
 
