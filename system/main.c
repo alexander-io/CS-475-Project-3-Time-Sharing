@@ -10,6 +10,7 @@
 mutex_t locks[N]; // c initializes global scope array index values to 0, FALSE is an alias to 0
 mutex_t print_lock[1]; //
 mutex_t iff[1];
+mutex_t decision_lock[1];
 /**
  * Delay for a random amount of time
  * @param alpha delay factor
@@ -53,44 +54,87 @@ void	philosopher(uint32 phil_id)
 	{
 		// 70/30
 		r = rand()%10;
-		if (TRUE){
-			mutex_lock(&locks[right]); // locks[(phil_id+N-1)%N];
+		if (r<3){
+
+			// make sure that all threads are into the if statement
+			// mutex_lock(&print_lock[0]);
+			// printf("entering eating if %d\n", phil_id);
+			// mutex_unlock(&print_lock[0]);
+			// mutex_lock(&locks[right]); // locks[(phil_id+N-1)%N];
 			// mutex_lock(&locks[left]);
 
-			/*place new lock here*/
-			mutex_lock(&iff[0]);
+			// acquire the left fork
+			mutex_lock(&locks[left]);
 
-			// if philosopher can only obtain one fork but not the other,
-			// you must release the fork that you acquired
-			if (locks[left]/*left is acquired*/){
-				/*, then release right one & do nothing & loop back*/
-				mutex_unlock(&iff[0]);
-				mutex_unlock(&locks[right]);
+			//
+			// mutex_lock(&print_lock[0]);
+			// printf("after mutex lock %d\n", phil_id);
+			// mutex_unlock(&print_lock[0]);
+			// test the right lock, set it if its not acquired
+			if (!test_and_set(&locks[right])){
 
-
-				// continue;
-			} else {
-				/*acquire lock & eat*/
-				mutex_lock(&locks[left]);
 				mutex_lock(&print_lock[0]);
 				printf("Philosopher %d eating : nom nom nom\n", phil_id);
 				mutex_unlock(&print_lock[0]);
 
 				eat();
-				/*place new lock here*/
 
-
-				mutex_unlock(&locks[left]);
-				mutex_unlock(&iff[0]);
 				mutex_unlock(&locks[right]);
 			}
+			mutex_unlock(&locks[left]);
+
+
+
+
+
+			/*place new lock here*/
+			// mutex_lock(&iff[0]);
+			// acquire teh "decision" lock, this bring atomicity to our checking whether both forks are available
+			// mutex_lock(&decision_lock[0]);
+			//
+			// if(!locks[left] && !locks[right]/*if both locks are free to acquire*/){
+			// 	mutex_lock(&locks[left]);
+			// 	mutex_lock(&locks[right]);
+			//
+			// 	mutex_lock(&print_lock[0]);
+			// 	printf("Philosopher %d eating : nom nom nom\n", phil_id);
+			// 	mutex_unlock(&print_lock[0]);
+			//
+			// 	eat();
+			//
+			// 	mutex_lock(&locks[right]);
+			// 	mutex_lock(&locks[left]);
+			//
+			// } else {
+			//
+			// }
+
+			// if philosopher can only obtain one fork but not the other,
+			// you must release the fork that you acquired
+			// if (locks[left]/*left is acquired*/){
+			// 	/*, then release right one & do nothing & loop back*/
+			// 	mutex_unlock(&iff[0]);
+			// 	mutex_unlock(&locks[right]);
+			//
+			// } else {
+			// 	/*acquire lock & eat*/
+			// 	mutex_lock(&locks[left]);
+			// 	mutex_lock(&print_lock[0]);
+			// 	printf("Philosopher %d eating : nom nom nom\n", phil_id);
+			// 	mutex_unlock(&print_lock[0]);
+			//
+			// 	eat();
+			// 	/*place new lock here*/
+			//
+			// 	mutex_unlock(&locks[left]);
+			// 	mutex_unlock(&iff[0]);
+			// 	mutex_unlock(&locks[right]);
+			// }
 
 			// /*place new lock here*/
 			// mutex_unlock(&iff[0]);
 
-
-		} //eat 30% of the time
-		else {
+		} else {
 
 			mutex_lock(&print_lock[0]);
 			printf("Philosopher %d thinking : zzzzzZZZz\n", phil_id);
