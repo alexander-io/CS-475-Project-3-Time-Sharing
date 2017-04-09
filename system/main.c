@@ -55,12 +55,13 @@ void	philosopher(uint32 phil_id)
 		// 70/30
 		r = rand()%10;
 		if (r<3){
+			// printf("!!!!!!!! r is less than 3\n");
 			mutex_lock(&locks[right]); // locks[(phil_id+N-1)%N];
 			mutex_lock(&locks[left]);
 			// mutex_lock(&right); // locks[(phil_id+N-1)%N];
 			// mutex_lock(&left);
 			mutex_lock(&print_lock[0]);
-			printf("Philosopher %d thinking : zzzzzZZZz\n", phil_id);
+			printf("Philosopher %d eating : nom nom nom\n", phil_id);
 			mutex_unlock(&print_lock[0]);
 			eat();
 			// mutex_unlock(&left);
