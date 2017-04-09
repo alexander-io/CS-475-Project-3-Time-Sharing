@@ -9,6 +9,7 @@
 // locks must be declared and initialized here
 mutex_t locks[N]; // c initializes global scope array index values to 0, FALSE is an alias to 0
 mutex_t print_lock[1]; //
+mutex_t iff[1];
 /**
  * Delay for a random amount of time
  * @param alpha delay factor
@@ -52,21 +53,49 @@ void	philosopher(uint32 phil_id)
 	{
 		// 70/30
 		r = rand()%10;
-		if (r<3){
+		if (TRUE){
 			mutex_lock(&locks[right]); // locks[(phil_id+N-1)%N];
-			mutex_lock(&locks[left]);
-			mutex_lock(&print_lock[0]);
-			printf("Philosopher %d eating : nom nom nom\n", phil_id);
-			mutex_unlock(&print_lock[0]);
-			eat();
-			mutex_unlock(&locks[left]);
-			mutex_unlock(&locks[right]);
+			// mutex_lock(&locks[left]);
+
+			/*place new lock here*/
+			mutex_lock(&iff[0]);
+
+			// if philosopher can only obtain one fork but not the other,
+			// you must release the fork that you acquired
+			if (locks[left]/*left is acquired*/){
+				/*, then release right one & do nothing & loop back*/
+				mutex_unlock(&iff[0]);
+				mutex_unlock(&locks[right]);
+
+
+				// continue;
+			} else {
+				/*acquire lock & eat*/
+				mutex_lock(&locks[left]);
+				mutex_lock(&print_lock[0]);
+				printf("Philosopher %d eating : nom nom nom\n", phil_id);
+				mutex_unlock(&print_lock[0]);
+
+				eat();
+				/*place new lock here*/
+
+
+				mutex_unlock(&locks[left]);
+				mutex_unlock(&iff[0]);
+				mutex_unlock(&locks[right]);
+			}
+
+			// /*place new lock here*/
+			// mutex_unlock(&iff[0]);
+
 
 		} //eat 30% of the time
 		else {
+
 			mutex_lock(&print_lock[0]);
 			printf("Philosopher %d thinking : zzzzzZZZz\n", phil_id);
 			mutex_unlock(&print_lock[0]);
+
 			think();
 		} //think 70% of the time
 	}
